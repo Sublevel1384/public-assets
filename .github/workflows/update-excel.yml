@@ -57,5 +57,5 @@ jobs:
             git add downloaded_file.xlsx
             # If for any reason there's nothing staged, this will not fail the job:
             git commit -m "chore: automated update of downloaded_file.xlsx" || echo "⚠️ No actual changes to commit"
-            git push origin gh-pages || echo "❌ Push failed"
+            git push origin main || echo "❌ Push failed"
           fi
