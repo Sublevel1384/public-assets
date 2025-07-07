@@ -1,0 +1,34 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["Auto Update downloaded_file.xlsx"]
+    types: [completed]
+
+jobs:
+  deploy:
+    needs: update-excel
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
+        with:
+          environment: github-pages
