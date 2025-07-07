@@ -4,10 +4,10 @@ on:
   workflow_run:
     workflows: ["Auto Update Excel File"]
     types: [completed]
+  workflow_dispatch:
 
 jobs:
   deploy:
-    needs: update-excel
     runs-on: ubuntu-latest
 
     permissions:
