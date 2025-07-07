@@ -1,9 +1,8 @@
 name: Deploy to GitHub Pages
 
-# Fire when your Excel-update workflow completes (or manually)
 on:
   workflow_run:
-    workflows: ["Auto Update Excel File"]   # <-- exact name of your update job
+    workflows: ["Auto Update Excel File"]
     types: [completed]
   workflow_dispatch:
 
@@ -12,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      pages: write      # allow publish
-      id-token: write   # required by configure-pages
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout main
@@ -25,11 +24,11 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: .          # bundle your repo root (including the updated XLSX)
+          path: .       # your repo root, including downloaded_file.xlsx
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
         with:
           environment: github-pages
