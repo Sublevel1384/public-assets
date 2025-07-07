@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout gh-pages branch
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          ref: gh-pages
+          ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0              # get full history so pushes don't error
 
