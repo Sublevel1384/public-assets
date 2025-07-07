@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   workflow_run:
-    workflows: ["Auto Update downloaded_file.xlsx"]
+    workflows: ["Auto Update Excel File"]
     types: [completed]
 
 jobs:
