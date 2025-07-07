@@ -11,12 +11,27 @@ permissions:
 jobs:
   refresh-gh-pages:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout gh-pages branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0              # get full history so pushes don't error
+
+      - name: Debug workspace
+        run: |
+          echo "=== pwd ==="
+          pwd
+          echo "--- ls -R . ---"
+          ls -R .
+          echo "--- git remote -v ---"
+          git remote -v
+          echo "--- git branch -avv ---"
+          git branch -avv
+          echo "--- git status ---"
+          git status
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -33,11 +48,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # only commit if downloaded_file.xlsx differs
+
+          # if there are no changes, diff --quiet exits 0
           if git diff --quiet downloaded_file.xlsx; then
-            echo "✅ No change detected"
+            echo "✅ No change detected; nothing to commit."
           else
+            echo "🚀 Changes detected; committing..."
             git add downloaded_file.xlsx
-            git commit -m "chore: automated update of downloaded_file.xlsx"
-            git push origin gh-pages
+            # If for any reason there's nothing staged, this will not fail the job:
+            git commit -m "chore: automated update of downloaded_file.xlsx" || echo "⚠️ No actual changes to commit"
+            git push origin gh-pages || echo "❌ Push failed"
           fi
